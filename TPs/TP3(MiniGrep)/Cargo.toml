@@ -1,0 +1,15 @@
+[TP3]
+name = "minigrep"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rayon = "1.7"
+
+[lib]
+name = "minigrep_lib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "minigrep"
+path = "src/main.rs"
