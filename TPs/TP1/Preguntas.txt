@@ -1,0 +1,10 @@
+1. ¿Qué sucede con dos requests simultáneas que tardan en procesarse?
+Las requests se procesan sequencialmente. Esto significa que si una request tarda en procesarse, la siguiente tendrá que esperar hasta que la primera haya terminado.
+Esto genera un aumento en el tiempo de respuesta y un peor rendimiento del server en general.
+
+2. ¿Por qué se observa este comportamiento?
+Este comportamiento se observa porque el servidor maneja las conexiones de manera secuencial, es decir cada request se procesa en el mismo hilo.
+Esto resulta en tiempos de espera más largos cuando hay múltiples requests al mismo tiempo.
+
+3. ¿Cómo solucionar usando solo librerías estándar de Rust?
+Se puede solucionar utilizando la librería de threads propia de Rust para crear un nuevo hilo para cada request.
