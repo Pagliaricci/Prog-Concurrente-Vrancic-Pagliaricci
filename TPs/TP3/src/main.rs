@@ -1,36 +1,29 @@
-use minigrep_lib::{search, SearchMode};
-use std::env;
-use std::path::PathBuf;
+use std::net::TcpListener;
+use std::io::{Read, Write};
+use std::net::TcpStream;
+use threadpool::ThreadPool;
+
+const THREAD_POOL_SIZE: usize = 4;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    if args.len() < 4 {
-        eprintln!("Uso: cargo run -- <modo> <patrón> <archivo1> [archivo2 ...]");
-        return;
-    }
+    let listener = TcpListener::bind("127.0.0.1:3030").expect("Failed to bind address");
+    let pool = ThreadPool::new(THREAD_POOL_SIZE);
 
-    let mode = match args[1].as_str() {
-        "seq" => SearchMode::Sequential,
-        "conc" => SearchMode::ConcurrentPerFile,
-        "c-chunk" => {
-            let chunk_size = 1024; // Tamaño de chunk
-            SearchMode::ConcurrentPerChunk(chunk_size)
-        }
-        _ => {
-            eprintln!("Modo no reconocido. Usa 'seq', 'conc' o 'c-chunk'");
-            return;
-        }
-    };
-
-    let pattern = &args[2];
-    let files: Vec<PathBuf> = args[3..].iter().map(PathBuf::from).collect();
-
-    match search(pattern, &files, mode) {
-        Ok(results) => {
-            for line in results {
-                println!("{}", line);
+    for stream in listener.incoming() {
+        match stream {
+            Ok(stream) => {
+                pool.execute(|| handle_connection(stream));
             }
+            Err(e) => eprintln!("Connection failed: {}", e),
         }
-        Err(e) => eprintln!("Error: {}", e),
+    }
+}
+
+fn handle_connection(mut stream: TcpStream) {
+    let mut buffer = [0; 1024];
+    if let Ok(_) = stream.read(&mut buffer) {
+        let response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, world!";
+        stream.write_all(response.as_bytes()).expect("Failed to write response");
+        stream.flush().expect("Failed to flush stream");
     }
 }

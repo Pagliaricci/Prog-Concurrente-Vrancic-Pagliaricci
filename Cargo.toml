@@ -1,6 +1,11 @@
 [package]
-name = "progConcurrente"
+name = "prog_concurrente_vrancic_pagliaricci"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 
 [dependencies]
+threadpool = "1.8.1"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
