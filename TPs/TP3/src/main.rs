@@ -3,6 +3,7 @@ use std::io::{Read, Write};
 use std::net::TcpStream;
 use threadpool::ThreadPool;
 
+
 const THREAD_POOL_SIZE: usize = 4;
 
 fn main() {

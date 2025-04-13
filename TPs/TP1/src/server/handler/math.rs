@@ -1,3 +1,4 @@
+
 pub fn calculate_pi(terms: u64) -> f64 {
     let mut pi = 0.0;
     let mut denominator = 1.0;
