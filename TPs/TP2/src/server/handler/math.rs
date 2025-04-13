@@ -6,3 +6,4 @@ pub fn calculate_pi(terms: u64) -> f64 {
     }
     4.0 * sum
 }
+
