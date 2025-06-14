@@ -13,7 +13,6 @@ pub struct NonBlockingQueue<T> {
 
 impl<T> NonBlockingQueue<T> {
     pub fn new() -> Self {
-        // Nodo dummy
         let dummy = Box::into_raw(Box::new(Node {
             item: None,
             next: AtomicPtr::new(ptr::null_mut()),
@@ -25,72 +24,45 @@ impl<T> NonBlockingQueue<T> {
         }
     }
 
-    pub fn enqueue(&self, item: Option<T>) {
+    pub fn enqueue(&self, item: T) {
         let new_node = Box::into_raw(Box::new(Node {
-            item,
+            item: Some(item),
             next: AtomicPtr::new(ptr::null_mut()),
         }));
 
         loop {
             let tail = self.tail.load(Ordering::Acquire);
-            let tail_next = unsafe { (*tail).next.load(Ordering::Acquire) };
+            let next = unsafe { (*tail).next.load(Ordering::Acquire) };
 
-            if tail == self.tail.load(Ordering::Acquire) {
-                if tail_next.is_null() {
-                    if unsafe {
-                        (*tail).next.compare_exchange(
-                            ptr::null_mut(),
-                            new_node,
-                            Ordering::AcqRel,
-                            Ordering::Relaxed,
-                        )
-                    }
-                        .is_ok()
-                    {
-                        let _ = self.tail.compare_exchange(
-                            tail,
-                            new_node,
-                            Ordering::AcqRel,
-                            Ordering::Relaxed,
-                        );
-                        break;
-                    }
-                } else {
-                    let _ = self.tail.compare_exchange(
-                        tail,
-                        tail_next,
-                        Ordering::AcqRel,
-                        Ordering::Relaxed,
-                    );
+            if next.is_null() {
+                if unsafe { (*tail).next.compare_exchange(ptr::null_mut(), new_node, Ordering::AcqRel, Ordering::Relaxed) }.is_ok() {
+                    self.tail.compare_exchange(tail, new_node, Ordering::AcqRel, Ordering::Relaxed).ok();
+                    return;
                 }
+            } else {
+                self.tail.compare_exchange(tail, next, Ordering::AcqRel, Ordering::Relaxed).ok();
             }
         }
     }
 
-    pub fn dequeue(&self) -> Option<Option<T>> {
+    pub fn dequeue(&self) -> Option<T> {
         loop {
             let head = self.head.load(Ordering::Acquire);
             let tail = self.tail.load(Ordering::Acquire);
-            let head_next = unsafe { (*head).next.load(Ordering::Acquire) };
+            let next = unsafe { (*head).next.load(Ordering::Acquire) };
 
-            if head == self.head.load(Ordering::Acquire) {
-                if head == tail {
-                    if head_next.is_null() {
-                        return None;
-                    }
-                    let _ = self.tail.compare_exchange(
-                        tail,
-                        head_next,
-                        Ordering::AcqRel,
-                        Ordering::Relaxed,
-                    );
-                } else {
-                    if self.head.compare_exchange(head, head_next, Ordering::AcqRel, Ordering::Relaxed).is_ok() {
-                        unsafe { drop(Box::from_raw(head)); }
-                        let val = unsafe { (*head_next).item.take() };
-                        return Some(val); // devuelve Option<T> dentro de Some
-                    }
-                }
+            if next.is_null() {
+                return None;
+            }
+
+            if head == tail {
+                self.tail.compare_exchange(tail, next, Ordering::AcqRel, Ordering::Relaxed).ok();
+                continue;
+            }
+
+            if self.head.compare_exchange(head, next, Ordering::AcqRel, Ordering::Relaxed).is_ok() {
+                let res = unsafe { (*next).item.take() };
+                return res;
             }
         }
     }
@@ -98,9 +70,9 @@ impl<T> NonBlockingQueue<T> {
 
 impl<T> Drop for NonBlockingQueue<T> {
     fn drop(&mut self) {
-        let mut curr = self.head.load(Ordering::Relaxed);
-        while !curr.is_null() {
-            unsafe {
+        unsafe {
+            let mut curr = self.head.load(Ordering::Relaxed);
+            while !curr.is_null() {
                 let next = (*curr).next.load(Ordering::Relaxed);
                 drop(Box::from_raw(curr));
                 curr = next;

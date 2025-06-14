@@ -123,15 +123,15 @@ fn main() {
         }
 
         Mode::NonBlocking => {
-            let queue: Arc<NonBlockingQueue<Option<String>>> = Arc::new(NonBlockingQueue::new());
+            let queue: Arc<NonBlockingQueue<String>> = Arc::new(NonBlockingQueue::new());
 
             let mut producer_threads = vec![];
             for i in 0..producers {
                 let q = Arc::clone(&queue);
                 producer_threads.push(thread::spawn(move || {
                     for j in 0..items {
-                        let item = Some(format!("P{i}-item{j}"));
-                        q.enqueue(Some(item));
+                        let item = format!("P{i}-item{j}");
+                        q.enqueue(item);
                     }
                 }));
             }
@@ -142,12 +142,11 @@ fn main() {
                 let consumed = Arc::clone(&consumed_counter);
                 consumer_threads.push(thread::spawn(move || {
                     loop {
-                        match q.dequeue() {
-                            Some(Some(_item)) => {
-                                consumed.fetch_add(1, Ordering::Relaxed);
+                        if let Some(item) = q.dequeue() {
+                            if item == "POISON_PILL" {
+                                break;
                             }
-                            Some(None) => break,      // poison pill
-                            None => continue,         // cola vacía momentáneamente
+                            consumed.fetch_add(1, Ordering::Relaxed);
                         }
                     }
                 }));
@@ -158,7 +157,7 @@ fn main() {
             }
 
             for _ in 0..consumers {
-                queue.enqueue(None); // poison pill
+                queue.enqueue("POISON_PILL".to_string());
             }
 
             for t in consumer_threads {
