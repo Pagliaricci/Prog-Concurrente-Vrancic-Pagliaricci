@@ -1,0 +1,56 @@
+[
+  {
+    "mode": "blocking",
+    "producers": 2,
+    "consumers": 2,
+    "items_per_producer": 10000,
+    "total_consumed": 20000,
+    "duration_ms": 22,
+    "success": true
+  },
+  {
+    "mode": "blocking",
+    "producers": 4,
+    "consumers": 4,
+    "items_per_producer": 10000,
+    "total_consumed": 40000,
+    "duration_ms": 33,
+    "success": true
+  },
+  {
+    "mode": "blocking",
+    "producers": 8,
+    "consumers": 8,
+    "items_per_producer": 10000,
+    "total_consumed": 80000,
+    "duration_ms": 51,
+    "success": true
+  },
+  {
+    "mode": "non-blocking",
+    "producers": 2,
+    "consumers": 2,
+    "items_per_producer": 10000,
+    "total_consumed": 20000,
+    "duration_ms": 6,
+    "success": true
+  },
+  {
+    "mode": "non-blocking",
+    "producers": 4,
+    "consumers": 4,
+    "items_per_producer": 10000,
+    "total_consumed": 40000,
+    "duration_ms": 19,
+    "success": true
+  },
+  {
+    "mode": "non-blocking",
+    "producers": 8,
+    "consumers": 8,
+    "items_per_producer": 10000,
+    "total_consumed": 80000,
+    "duration_ms": 32,
+    "success": true
+  }
+]
