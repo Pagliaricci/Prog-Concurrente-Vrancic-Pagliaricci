@@ -1,0 +1,19 @@
+# Ignorar binarios y compilados de todos los TPs
+**/target/
+**/Cargo.lock
+
+# Ignorar archivos temporales de IDEs
+.idea/
+*.iml
+
+# Ignorar archivos temporales del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos swap temporales de editores
+*~
+*.swp
+*.swo
+
+# Archivos de log y resultados
+**/*.log
