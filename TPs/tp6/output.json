@@ -1,0 +1,24 @@
+[
+  {
+    "shortest_path": [
+      "https://es.wikipedia.org/wiki/F%C3%ADsica",
+      "https://es.wikipedia.org/wiki/Albert_Einstein"
+    ],
+    "total_links_processed": 1338
+  },
+  {
+    "shortest_path": [
+      "https://es.wikipedia.org/wiki/S%C3%B3crates",
+      "https://es.wikipedia.org/wiki/%C3%89tica",
+      "https://es.wikipedia.org/wiki/Nihilismo"
+    ],
+    "total_links_processed": 2741
+  },
+  {
+    "shortest_path": [
+      "https://es.wikipedia.org/wiki/Inform%C3%A1tica",
+      "https://es.wikipedia.org/wiki/Rob%C3%B3tica"
+    ],
+    "total_links_processed": 153
+  }
+]
