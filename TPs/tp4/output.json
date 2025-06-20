@@ -1,0 +1,12 @@
+[
+  {
+    "result": "Upload attempted",
+    "route": "/upload",
+    "timestamp": 1750456103662
+  },
+  {
+    "result": "Stats returned",
+    "route": "/stats",
+    "timestamp": 1750456174386
+  }
+]
