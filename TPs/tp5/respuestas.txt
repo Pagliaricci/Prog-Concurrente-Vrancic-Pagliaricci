@@ -1,0 +1,29 @@
+Respuestas a las preguntas abiertas
+
+1) ¿Qué diferencias notaste en el rendimiento entre la versión bloqueante y la no bloqueante?
+
+La versión no bloqueante fue más rápida en todas las pruebas. Por ejemplo, con 2 productores y 2 consumidores,
+la bloqueante tardó 22ms, mientras que la no bloqueante solo 6ms. Al aumentar la cantidad de hilos (4 y 8), ambas
+funcionaron bien, pero la no bloqueante siempre fue más rapida.
+Esto parece ser porque no tiene que "esperar" tanto como la bloqueante.
+
+2) ¿Qué fue lo más complicado al hacer la versión no bloqueante?
+
+Lo más difícil fue manejar bien la memoria.
+Como usamos punteros y cosas atómicas, un pequeño error puede hacer que el programa se rompa o
+intente liberar dos veces el mismo dato. De hecho, me pasó eso: tuvimos errores raros de memoria hasta que nos dimos
+cuenta de que tenía que liberar la memoria del nodo solo cuando realmente le tocaba a ese hilo hacerlo,
+justo después de mover el puntero.
+
+3) ¿Cuándo conviene usar una u otra?
+
+La versión bloqueante está bien para programas con pocos hilos.
+Es más fácil de entender y mantener. En cambio, la no bloqueante es mejor cuando hay muchos hilos
+trabajando al mismo tiempo o cuando se necesita que el programa responda rápido como en apps en tiempo real.
+
+4) ¿Qué pasa si mezclamos productores bloqueantes con consumidores no bloqueantes (o al revés)?
+
+No conviene hacerlo. Cada versión usa su propia forma de manejar los datos y la sincronización.
+Si se mezclan, puede haber errores, datos perdidos o que el programa se rompa.
+Lo mejor es que todos usen la misma cola: o todos bloqueantes, o todos no bloqueantes.
+

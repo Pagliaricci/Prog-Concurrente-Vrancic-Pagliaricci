@@ -1,0 +1,7 @@
+[INFO] Starting service
+[ERROR] NullPointerException occurred
+[WARNING] Disk almost full
+[EXCEPTION] TimeoutException on line 203
+[DEBUG] User logged in
+exception: something failed
+everything is fine

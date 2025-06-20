@@ -1,0 +1,13 @@
+cargo run --release -- threads io 10
+cargo run --release -- async io 10
+cargo run --release -- threads io 1000
+cargo run --release -- async io 1000
+cargo run --release -- threads io 100000
+cargo run --release -- async io 100000
+
+cargo run --release -- threads pi 4 1000000
+cargo run --release -- async pi 4 1000000
+cargo run --release -- threads pi 8 10000000
+cargo run --release -- async pi 8 10000000
+cargo run --release -- threads pi 100 10000000
+cargo run --release -- async pi 100 10000000
