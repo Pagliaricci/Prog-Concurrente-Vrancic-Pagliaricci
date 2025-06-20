@@ -1,0 +1,90 @@
+[
+  {
+    "timestamp": "2025-06-14 18:58:31",
+    "mode": "threads",
+    "task_type": "io",
+    "tasks": 10,
+    "terms": null,
+    "time_ms": 105
+  },
+  {
+    "timestamp": "2025-06-14 18:59:38",
+    "mode": "async",
+    "task_type": "io",
+    "tasks": 10,
+    "terms": null,
+    "time_ms": 102
+  },
+  {
+    "timestamp": "2025-06-14 18:59:52",
+    "mode": "threads",
+    "task_type": "io",
+    "tasks": 1000,
+    "terms": null,
+    "time_ms": 124
+  },
+  {
+    "timestamp": "2025-06-14 19:00:11",
+    "mode": "async",
+    "task_type": "io",
+    "tasks": 1000,
+    "terms": null,
+    "time_ms": 108
+  },
+  {
+    "timestamp": "2025-06-14 19:00:40",
+    "mode": "async",
+    "task_type": "io",
+    "tasks": 100000,
+    "terms": null,
+    "time_ms": 993
+  },
+  {
+    "timestamp": "2025-06-14 19:01:57",
+    "mode": "threads",
+    "task_type": "pi",
+    "tasks": 4,
+    "terms": 1000000,
+    "time_ms": 5
+  },
+  {
+    "timestamp": "2025-06-14 19:02:54",
+    "mode": "async",
+    "task_type": "pi",
+    "tasks": 4,
+    "terms": 1000000,
+    "time_ms": 6
+  },
+  {
+    "timestamp": "2025-06-14 19:03:05",
+    "mode": "threads",
+    "task_type": "pi",
+    "tasks": 8,
+    "terms": 10000000,
+    "time_ms": 16
+  },
+  {
+    "timestamp": "2025-06-14 19:03:18",
+    "mode": "async",
+    "task_type": "pi",
+    "tasks": 8,
+    "terms": 10000000,
+    "time_ms": 17
+  },
+  {
+    "timestamp": "2025-06-14 19:06:18",
+    "mode": "threads",
+    "task_type": "pi",
+    "tasks": 100,
+    "terms": 10000000,
+    "time_ms": 13
+  },
+  {
+    "timestamp": "2025-06-14 19:06:36",
+    "mode": "async",
+    "task_type": "pi",
+    "tasks": 100,
+    "terms": 10000000,
+    "time_ms": 13
+  }
+]
